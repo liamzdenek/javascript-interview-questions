@@ -1,32 +1,26 @@
+document.addEventListener('DOMContentLoaded', function() {
+	output = document.getElementById("content");
+	
+	questionOne(attrStructure);
+	output.innerHTML += "<h3>#1</h3>";
+	output.innerHTML += "<pre>"+JSON.stringify(attrStructure)+"</pre>";
+});
+
 // #1
 
-// Given structure in attrStructure:
-//  {
-//    tag: "",
-//    value: "",
-//    attr: [
-//      {"tag": "", value:""},{"tag":"", "value":""}
-//    ]
-//  }
-
-// convert into structure that looks like: 
-//  {
-//    "tag": "value",
-//    "attr": {
-//      "tag": "value"
-//    }
-//  }
-//  eg. 
-//  {
-//    "(0008,002A)": "20130318124132"
-//  }
 var attrStructure = {"tag":"(0008,0018)","value":"1.3.51.0.7.1193286233.9961.33088.48048.47436.15671.21980","attr":[{"tag":"(0008,002A)","value":"20130318124132"},{"tag":"(0008,0020)","value":"20130318"},{"tag":"(0008,0030)","value":"123650"},{"tag":"(0008,0018)","value":"1.3.51.0.7.1193286233.9961.33088.48048.47436.15671.21980"},{"tag":"(0008,0060)","value":"CR"},{"tag":"(0008,103E)","value":"SUNRISE VIEW"},{"tag":"(0018,0015)","value":"KNEE"},{"tag":"(0018,1164)","value":"0.1\\0.1"},{"tag":"(0018,5101)","value":"AP"},{"tag":"(0020,0013)","value":"2"},{"tag":"(0020,0020)","value":"L\\F"},{"tag":"(0028,0030)","value":"0.10000000149011\\0.10000000149011"},{"tag":"(0028,1052)","value":"0"},{"tag":"(0028,1053)","value":"1"},{"tag":"(0028,1054)","value":"LOG_E REL"},{"tag":"(0028,0101)","value":"12"},{"tag":"(0028,0010)","value":"2328"},{"tag":"(0028,0011)","value":"2928"},{"tag":"(0008,1030)","value":"Femur Knee Leg"},{"tag":"(0010,0010)","value":"BEAN^ELENA"},{"tag":"(0010,0020)","value":"690100"},{"tag":"(0010,0030)","value":"19400826"},{"tag":"(0010,0040)","value":"F"},{"tag":"(0010,4000)","value":"L KNEE"}]};
 
-// test that your structure is correct - use qUnit or any other test framework in an external file
-
-// loop through the above data structure and create a tree-like output on the screen. 
-// You can use jQuery to attach event handlers for hiding/showing nodes in the tree.
-
+// will not force a reallocation, returns null always. no error handling
+function questionOne(o) {
+	o[o.tag] = o.value;
+	delete(o.tag);
+	delete(o.value);
+	new_pairs = {};
+	for(var i = 0; i < o.attr.length; i++) {
+		new_pairs[o.attr[i].tag] = o.attr[i].value;
+	}
+	o.attr = new_pairs;
+}
 
 // #2
 
