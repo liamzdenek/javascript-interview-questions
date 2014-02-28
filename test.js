@@ -1,10 +1,46 @@
+workerResult = null;
+worker = new Worker("worker.js");
+
+worker.addEventListener("message", function(e) {
+	workerResult = e.data;
+	container = document.getElementById("workerResult");
+	
+	data = document.createElement("div");
+	button = document.createElement("button");
+
+	button.innerHTML = "Reverse";
+
+	button.onclick = function() {
+		workerResult = workerResult.reverse();
+		repopulateWorkerResults();
+	}
+
+	repopulateWorkerResults();
+
+	container.appendChild(button);
+	container.appendChild(data);
+});
+
+function repopulateWorkerResults() {
+	data.innerHTML = "";
+	for(i in workerResult) {
+		data.innerHTML += workerResult[i].word_len+" = "+workerResult[i].words+"<br/>";
+	}
+}
+
 document.addEventListener('DOMContentLoaded', function() {
 	output = document.getElementById("content");
 	
 	questionOne(attrStructure);
 	output.innerHTML += "<h3>#1</h3>";
 	output.innerHTML += "<pre>"+JSON.stringify(attrStructure)+"</pre>";
+
+	output.innerHTML += "<h3>#2</h3>";
+	output.innerHTML += '<div id="workerResult"></div>';
+
+	worker.postMessage(); // begin the work
 });
+
 
 // #1
 
@@ -21,18 +57,6 @@ function questionOne(o) {
 	}
 	o.attr = new_pairs;
 }
-
-// #2
-
-// given the text in the variable "corpus", write the following:
-var corpus = "The ship drew on and had safely passed the strait, which some volcanic shock has made between the Calasareigne and Jaros islands; had doubled Pomegue, and approached the harbor under topsails, jib, and spanker, but so slowly and sedately that the idlers, with that instinct which is the forerunner of evil, asked one another what misfortune could have happened on board. However, those experienced in navigation saw plainly that if any accident had occurred, it was not to the vessel herself, for she bore down with all the evidence of being skilfully handled, the anchor a-cockbill, the jib-boom guys already eased off, and standing by the side of the pilot, who was steering the Pharaon towards the narrow entrance of the inner port, was a young man, who, with activity and vigilant eye, watched every motion of the ship, and repeated each direction of the pilot.";
-
-// 1. calculate word frequency in the input text collection. Separators include [ ,-.?!]
-// 2. show word frequency in descending order and ascending order, based on a radio button in index.html
-// 3. show words in alphabetical order and reverse alphabetical order, with word frequency, based on a radio button in index.html
-// 4. ensure that browser does not block when calculating these frequencies
-
-
 // #3
 //
 // the key here is to allow for async, non-blocking processing while executing the callback only once, only once ALL async calls have completed.
